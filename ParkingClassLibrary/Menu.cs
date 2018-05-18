@@ -50,11 +50,11 @@ namespace ParkingClassLibrary
             try
             {
                 Parking.AddCar(carType);
-                Console.WriteLine("Done!");
+                //Console.WriteLine("Done!");
             }
             catch (NoFreeParkingPlacesException)
             {
-                Console.WriteLine("No free parking places!");
+                //Console.WriteLine("No free parking places!");
             }
         }
 
@@ -69,15 +69,15 @@ namespace ParkingClassLibrary
             try
             {
                 Parking.AddCar(carType, defaultBalance);
-                Console.WriteLine("Done!");
+                //Console.WriteLine("Done!");
             }
             catch (NoFreeParkingPlacesException)
             {
-                Console.WriteLine("No free parking places!");
+                //Console.WriteLine("No free parking places!");
             }
             catch (CarBalanceLessZeroException)
             {
-                Console.WriteLine("Starting balance of car cannot be less zero!");
+                //Console.WriteLine("Starting balance of car cannot be less zero!");
             }
         }
 
@@ -90,19 +90,19 @@ namespace ParkingClassLibrary
             try
             {
                 Parking.DeleteCarByNumberOfParkingPlace(numberOfParkingPlace);
-                Console.WriteLine("Done!");
+                //Console.WriteLine("Done!");
             }
             catch (NumberOfParkingPlaceDoesNotExistException)
             {
-                Console.WriteLine("Such number of parking place does not exist! Try another number!");
+                //Console.WriteLine("Such number of parking place does not exist! Try another number!");
             }
             catch (ParkingPlaceIsFreeException)
             {
-                Console.WriteLine("You can`t delete car, because parking place are already free!");
+                //Console.WriteLine("You can`t delete car, because parking place are already free!");
             }
             catch (CarBalanceLessZeroException)
             {
-                Console.WriteLine("Car balance is less zero! Please replenish balance of car car");
+                //Console.WriteLine("Car balance is less zero! Please replenish balance of car car");
             }
         }
 
@@ -115,15 +115,15 @@ namespace ParkingClassLibrary
             try
             {
                 Parking.DeleteCarById(idOfCar);
-                Console.WriteLine("Done!");
+                //Console.WriteLine("Done!");
             }
             catch (IdOfCarDoesNotExistException)
             {
-                Console.WriteLine("Such id of car does not exist!");
+                //Console.WriteLine("Such id of car does not exist!");
             }
             catch (CarBalanceLessZeroException)
             {
-                Console.WriteLine("Car balance is less zero! Please replenish balance of car car");
+                //Console.WriteLine("Car balance is less zero! Please replenish balance of car car");
             }
         }
 
@@ -137,34 +137,34 @@ namespace ParkingClassLibrary
             try
             {
                 Parking.ReplenishCarBalanceById(idOfCar, amount);
-                Console.WriteLine("Done!");
+                //Console.WriteLine("Done!");
             }
             catch (IdOfCarDoesNotExistException)
             {
-                Console.WriteLine("Such id of car does not exist!");
+                //Console.WriteLine("Such id of car does not exist!");
             }
             catch (AmountOfMoneyLessZeroException)
             {
-                Console.WriteLine("Amount of money less or equal zero!");
+                //Console.WriteLine("Amount of money less or equal zero!");
             }
         }
 
         /// <summary>
         /// Write number of free parking places.
         /// </summary>
-        public void GetFreeParkingPlaces()
+        public int GetFreeParkingPlaces()
         {
-            int numberOfFreeParkingPlaces = Parking.GetFreeParkingPlaces();
-            Console.WriteLine("Number of free parking places = {0}", numberOfFreeParkingPlaces);
+            return Parking.GetFreeParkingPlaces();
+            //Console.WriteLine("Number of free parking places = {0}", numberOfFreeParkingPlaces);
         }
 
         /// <summary>
         /// Write number of occupied parking places.
         /// </summary>
-        public void GetOccupiedParkingPlaces()
+        public int GetOccupiedParkingPlaces()
         {
-            int numberOfOccupiedParkingPlaces = Parking.GetOccupiedParkingPlaces();
-            Console.WriteLine("Number of occupied parking places = {0}", numberOfOccupiedParkingPlaces);
+            return Parking.GetOccupiedParkingPlaces();
+            //Console.WriteLine("Number of occupied parking places = {0}", numberOfOccupiedParkingPlaces);
         }
 
         /// <summary>
@@ -184,18 +184,18 @@ namespace ParkingClassLibrary
             {
                 Thread.Sleep(parking.Settings.Timeout * 1000);
                 parking.WriteOffFunds();
-                Console.WriteLine("Written-off"); //Test
+                //Console.WriteLine("Written-off"); //Test
             }
         }
 
         /// <summary>
         /// Get StringBuilder instance with transaction for last minute.
         /// </summary>
-        public void GetTransactionsForLastMinute()
+        public string GetTransactionsForLastMinute()
         {
-            StringBuilder stringBuilder = Parking.GetTransactionsForLastMinute();
+            return Parking.GetTransactionsForLastMinute().ToString();
 
-            Console.WriteLine(stringBuilder.ToString());
+            //Console.WriteLine(stringBuilder.ToString());
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace ParkingClassLibrary
 
             earnedFundsForLastMinute = Parking.GetEarnedFundsForLastMinute();
 
-            Console.WriteLine("Earned funds for last minute: {0}", earnedFundsForLastMinute);
+            //Console.WriteLine("Earned funds for last minute: {0}", earnedFundsForLastMinute);
         }
 
         /// <summary>
@@ -233,13 +233,49 @@ namespace ParkingClassLibrary
         /// <summary>
         /// Read date from Transaction.log
         /// </summary>
-        public void ReadTransactionLog()
+        public string ReadTransactionLog()
         {
-            string dateFromTransactionLog = Parking.ReadTransactionLog();
+            return Parking.ReadTransactionLog();
 
-            Console.WriteLine(dateFromTransactionLog);
+            //Console.WriteLine(dateFromTransactionLog);
         }
 
+        public string GetAllCars()
+        {
+            return Parking.GetAllCars().ToString();
+        }
+
+        public string GetCarDetails(int idOfCar)
+        {
+            try
+            {
+                return Parking.GetCarDetails(idOfCar);
+            }
+            catch (IdOfCarDoesNotExistException)
+            {
+                return "Id of car does not exist!";
+            }
+        }
+
+        public double GetParkingBalance()
+        {
+            return Parking.Balance;
+        }
+
+        /// <summary>
+        /// Get transactions of the car for last minute.
+        /// </summary>
+        public string GetTransactionsOfCarForLastMinute(int idOfCar)
+        {
+            try
+            {
+                return GetTransactionsOfCarForLastMinute(idOfCar).ToString();
+            }
+            catch (IdOfCarDoesNotExistException)
+            {
+                return "Id of car does not exist!";
+            }
+        }
 
     }
 }

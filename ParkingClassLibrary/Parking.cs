@@ -401,5 +401,96 @@ namespace ParkingClassLibrary
 
             return dateFromTransactionLog;
         }
+
+        /// <summary>
+        /// Get StringBuilder of all cars.
+        /// </summary>
+        /// <returns>StringBuilder instance of all cars</returns>
+        public StringBuilder GetAllCars()
+        {
+            StringBuilder stringBuilderOfAllCars = new StringBuilder();
+
+            foreach (Car item in ListOfCars)
+            {
+                stringBuilderOfAllCars.AppendLine("Id of the car: " + item.Id.ToString() + "  Type of the car: " +
+                    item.CarType.ToString() + "  Balance of the car: " + item.Balance);
+            }
+
+            return stringBuilderOfAllCars;
+        }
+
+        // <summary>
+        /// Get details on the car.
+        /// </summary>
+        /// <returns>Details on the car</returns>
+        public string GetCarDetails(int idOfCar)
+        {
+            string details = "";
+
+            int counterOfId = 0;
+
+            foreach (Car item in ListOfCars)
+            {
+                if (item.Id == idOfCar)
+                {
+                    break;
+                }
+                else
+                {
+                    counterOfId++;
+                }
+            }
+
+            if (counterOfId >= ListOfCars.Count)
+            {
+                throw new IdOfCarDoesNotExistException("Id of car does not exist!");
+            }
+
+            details = "Id of the car: " + ListOfCars[counterOfId].Id.ToString() + "  Type of the car: " +
+                    ListOfCars[counterOfId].CarType.ToString() + "  Balance of the car: " + ListOfCars[counterOfId].Balance;
+
+            return details;
+        }
+
+
+        /// <summary>
+        /// Get StringBuilder instance with transaction of the car for last minute.
+        /// </summary>
+        public StringBuilder GetTransactionsOfCarForLastMinute(int idOfCar)
+        {
+            DateTime dateTimeNow = DateTime.Now;
+            DateTime dateTimeNowMinuseOneMinute = dateTimeNow.Subtract(new TimeSpan(0, 1, 0));
+
+            int counterOfId = 0;
+
+            foreach (Car item in ListOfCars)
+            {
+                if (item.Id == idOfCar)
+                {
+                    break;
+                }
+                else
+                {
+                    counterOfId++;
+                }
+            }
+
+            if (counterOfId >= ListOfCars.Count)
+            {
+                throw new IdOfCarDoesNotExistException("Id of car does not exist!");
+            }
+
+            StringBuilder stringBuilderOfTransaction = new StringBuilder();
+
+            foreach (Transaction item in ListOfTransactions)
+            {
+                if (item.DateTimeOfTransaction > dateTimeNowMinuseOneMinute && item.IdOfCar == idOfCar)
+                {
+                    stringBuilderOfTransaction.AppendLine(item.ToString());
+                }
+            }
+
+            return stringBuilderOfTransaction;
+        }
     }
 }
