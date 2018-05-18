@@ -37,32 +37,40 @@ namespace ParkingWebAPI.Controllers
             return dataService.Menu.GetCarDetails(id);
         }
         
-        // POST: api/Cars/car_type. Example^ api/Cars/Truck
-        [HttpPost("{car_type}")]
-        public IEnumerable<string> AddCar(string car_type)
+        // POST: api/Cars/car_type. Example^ api/Cars/Truck/10
+        [HttpPost("{car_type}/{balance}")]
+        public IEnumerable<string> AddCar(string car_type, string balance)
         {
-            if (car_type == "Truck")
+            try
             {
-                dataService.Menu.AddCar(CarTypes.Truck);
-                return new string[] { "Car added " + car_type };
+                if (car_type == "Truck")
+                {
+                    dataService.Menu.AddCar(CarTypes.Truck, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+                else if (car_type == "Bus")
+                {
+                    dataService.Menu.AddCar(CarTypes.Bus, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+                else if (car_type == "Motorcycle")
+                {
+                    dataService.Menu.AddCar(CarTypes.Motorcycle, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+                else if (car_type == "Passenger")
+                {
+                    dataService.Menu.AddCar(CarTypes.Passenger, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+
+                return new string[] { "Something went wrong!" };
             }
-            else if (car_type == "Bus")
+            catch (FormatException)
             {
-                dataService.Menu.AddCar(CarTypes.Bus);
-                return new string[] { "Car added " + car_type };
-            }
-            else if (car_type == "Motorcycle")
-            {
-                dataService.Menu.AddCar(CarTypes.Motorcycle);
-                return new string[] { "Car added " + car_type };
-            }
-            else if (car_type == "Passenger")
-            {
-                dataService.Menu.AddCar(CarTypes.Passenger);
-                return new string[] { "Car added " + car_type };
+                return new string[] { "FormatException!" };
             }
 
-            return new string[] { "Something went wrong!" };
 
         }
 
@@ -75,18 +83,9 @@ namespace ParkingWebAPI.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IEnumerable<string> DeleteCar(int id)
         {
-            //menu.DeleteCarById(id);
+            return new string[] { dataService.Menu.DeleteCarById(id) };             
         }
-    }
-
-    //ЧОМУСЬ ПЕРЕСТАЛО ПРАЦЮВАТИ........
-    ////Обхідний маневр, бо більше нічого не виходить
-    ////щось не виходить через enum CarTypes призначати тип машини
-    public class CarDetail
-    {
-        public string carType { get; set; }
-        //public double startingBalance { get; set; }
     }
 }

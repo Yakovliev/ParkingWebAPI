@@ -110,20 +110,20 @@ namespace ParkingClassLibrary
         /// Delete a car by id.
         /// </summary>
         /// <param name="idOfCar">Id of car.</param>
-        public void DeleteCarById(int idOfCar)
+        public string DeleteCarById(int idOfCar)
         {
             try
             {
                 Parking.DeleteCarById(idOfCar);
-                //Console.WriteLine("Done!");
+                return "Car Deleted";
             }
             catch (IdOfCarDoesNotExistException)
             {
-                //Console.WriteLine("Such id of car does not exist!");
+                return "Car IdOfCarDoesNotExistException";
             }
             catch (CarBalanceLessZeroException)
             {
-                //Console.WriteLine("Car balance is less zero! Please replenish balance of car car");
+                return "Car CarBalanceLessZeroException";
             }
         }
 
