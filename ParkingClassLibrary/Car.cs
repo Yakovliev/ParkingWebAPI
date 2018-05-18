@@ -51,6 +51,11 @@ namespace ParkingClassLibrary
             Balance = 0D;
         }
 
+        public Car()
+        {
+
+        }
+
         /// <summary>
         /// Instance of Car class WITH starting Balance (Balance property)
         /// </summary>

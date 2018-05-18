@@ -6,9 +6,9 @@ namespace ParkingClassLibrary
 {
     public enum CarTypes
     {
-        Passenger,
-        Truck,
-        Bus,
-        Motorcycle
+        Passenger = 0,
+        Truck = 1,
+        Bus = 2,
+        Motorcycle = 3
     }
 }
