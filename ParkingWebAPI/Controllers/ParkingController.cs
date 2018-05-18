@@ -38,13 +38,6 @@ namespace ParkingWebAPI.Controllers
         {
             return new string[] { "Parking balance: " + dataService.Menu.GetParkingBalance().ToString() };
         }
-
-        // GET: api/Parking/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
         
         // POST: api/Parking
         [HttpPost]
