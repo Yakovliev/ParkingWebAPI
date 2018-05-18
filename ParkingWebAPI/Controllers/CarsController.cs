@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParkingClassLibrary;
 using Newtonsoft.Json;
 using System.Net.Http;
+using ParkingWebAPI.Services;
 
 
 namespace ParkingWebAPI.Controllers
@@ -15,40 +16,55 @@ namespace ParkingWebAPI.Controllers
     [Route("api/Cars")]
     public class CarsController : Controller
     {
-        private Menu menu;
+        private readonly DataService dataService;
 
-        public CarsController()
+        public CarsController(DataService dataService)
         {
-            menu = Menu.GetMenu();
+            this.dataService = dataService;
         }
 
         // GET: api/Cars
         [HttpGet]
-        public string Get()
+        public string GetAllCars()
         {
-            return menu.GetAllCars();
+            return dataService.Menu.GetAllCars();
         }
 
         // GET: api/Cars/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
+            
             return "value";
         }
         
-        // POST: api/Cars
-        [HttpPost]
-        public IEnumerable<string> Post([FromBody] string value)
+        // POST: api/Cars/car_type. Example^ api/Cars/Truck
+        [HttpPost("{car_type}")]
+        public IEnumerable<string> AddCar(string car_type)
         {
-            var data = JsonConvert.DeserializeObject<CarDetail>(value);
-
-            if (data.carType == "Truck")
+            if (car_type == "Truck")
             {
-                menu.AddCar(CarTypes.Truck);
+                dataService.Menu.AddCar(CarTypes.Truck);
+                return new string[] { "Car added " + car_type };
+            }
+            else if (car_type == "Bus")
+            {
+                dataService.Menu.AddCar(CarTypes.Bus);
+                return new string[] { "Car added " + car_type };
+            }
+            else if (car_type == "Motorcycle")
+            {
+                dataService.Menu.AddCar(CarTypes.Motorcycle);
+                return new string[] { "Car added " + car_type };
+            }
+            else if (car_type == "Passenger")
+            {
+                dataService.Menu.AddCar(CarTypes.Passenger);
+                return new string[] { "Car added " + car_type };
             }
 
+            return new string[] { "Something went wrong!" };
 
-            return new string[] { "Car added " + value };
         }
 
 
@@ -62,7 +78,7 @@ namespace ParkingWebAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            menu.DeleteCarById(id);
+            //menu.DeleteCarById(id);
         }
     }
 
