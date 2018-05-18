@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParkingClassLibrary;
 using Newtonsoft.Json;
 using System.Net.Http;
+using ParkingWebAPI.Services;
 
 
 namespace ParkingWebAPI.Controllers
@@ -15,40 +16,62 @@ namespace ParkingWebAPI.Controllers
     [Route("api/Cars")]
     public class CarsController : Controller
     {
-        private Menu menu;
+        private readonly DataService dataService;
 
-        public CarsController()
+        public CarsController(DataService dataService)
         {
-            menu = Menu.GetMenu();
+            this.dataService = dataService;
         }
 
         // GET: api/Cars
         [HttpGet]
-        public string Get()
+        public string GetAllCars()
         {
-            return menu.GetAllCars();
+            return dataService.Menu.GetAllCars();
         }
 
-        // GET: api/Cars/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
+        // GET: api/Cars/id. Example: api/Cars/3
+        [HttpGet("{id}")]
+        public string GetCarById(int id)
+        {            
+            return dataService.Menu.GetCarDetails(id);
         }
         
-        // POST: api/Cars
-        [HttpPost]
-        public IEnumerable<string> Post([FromBody] string value)
+        // POST: api/Cars/car_type. Example^ api/Cars/Truck/10
+        [HttpPost("{car_type}/{balance}")]
+        public IEnumerable<string> AddCar(string car_type, string balance)
         {
-            var data = JsonConvert.DeserializeObject<CarDetail>(value);
-
-            if (data.carType == "Truck")
+            try
             {
-                menu.AddCar(CarTypes.Truck);
+                if (car_type == "Truck")
+                {
+                    dataService.Menu.AddCar(CarTypes.Truck, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+                else if (car_type == "Bus")
+                {
+                    dataService.Menu.AddCar(CarTypes.Bus, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+                else if (car_type == "Motorcycle")
+                {
+                    dataService.Menu.AddCar(CarTypes.Motorcycle, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+                else if (car_type == "Passenger")
+                {
+                    dataService.Menu.AddCar(CarTypes.Passenger, Convert.ToDouble(balance));
+                    return new string[] { "Car added " + car_type };
+                }
+
+                return new string[] { "Something went wrong!" };
+            }
+            catch (FormatException)
+            {
+                return new string[] { "FormatException!" };
             }
 
 
-            return new string[] { "Car added " + value };
         }
 
 
@@ -60,18 +83,9 @@ namespace ParkingWebAPI.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IEnumerable<string> DeleteCar(int id)
         {
-            menu.DeleteCarById(id);
+            return new string[] { dataService.Menu.DeleteCarById(id) };             
         }
-    }
-
-    //ЧОМУСЬ ПЕРЕСТАЛО ПРАЦЮВАТИ........
-    ////Обхідний маневр, бо більше нічого не виходить
-    ////щось не виходить через enum CarTypes призначати тип машини
-    public class CarDetail
-    {
-        public string carType { get; set; }
-        //public double startingBalance { get; set; }
     }
 }

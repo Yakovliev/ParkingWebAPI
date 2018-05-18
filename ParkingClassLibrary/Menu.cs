@@ -110,20 +110,20 @@ namespace ParkingClassLibrary
         /// Delete a car by id.
         /// </summary>
         /// <param name="idOfCar">Id of car.</param>
-        public void DeleteCarById(int idOfCar)
+        public string DeleteCarById(int idOfCar)
         {
             try
             {
                 Parking.DeleteCarById(idOfCar);
-                //Console.WriteLine("Done!");
+                return "Car Deleted";
             }
             catch (IdOfCarDoesNotExistException)
             {
-                //Console.WriteLine("Such id of car does not exist!");
+                return "Car IdOfCarDoesNotExistException";
             }
             catch (CarBalanceLessZeroException)
             {
-                //Console.WriteLine("Car balance is less zero! Please replenish balance of car car");
+                return "Car CarBalanceLessZeroException";
             }
         }
 
@@ -132,20 +132,21 @@ namespace ParkingClassLibrary
         /// </summary>
         /// <param name="idOfCar">Id of car</param>
         /// <param name="amount">Amount of money</param>
-        public void ReplenishCarBalanceById(int idOfCar, double amount)
+        public string ReplenishCarBalanceById(int idOfCar, double amount)
         {
             try
             {
                 Parking.ReplenishCarBalanceById(idOfCar, amount);
-                //Console.WriteLine("Done!");
+                return "Balance of the car with id " + idOfCar.ToString() +
+                    "increased by " + amount.ToString();
             }
             catch (IdOfCarDoesNotExistException)
             {
-                //Console.WriteLine("Such id of car does not exist!");
+                return "Such id of car does not exist!";
             }
             catch (AmountOfMoneyLessZeroException)
             {
-                //Console.WriteLine("Amount of money less or equal zero!");
+                return "Amount of money less or equal zero!";
             }
         }
 
@@ -269,7 +270,7 @@ namespace ParkingClassLibrary
         {
             try
             {
-                return GetTransactionsOfCarForLastMinute(idOfCar).ToString();
+                return Parking.GetTransactionsOfCarForLastMinute(idOfCar).ToString();
             }
             catch (IdOfCarDoesNotExistException)
             {
