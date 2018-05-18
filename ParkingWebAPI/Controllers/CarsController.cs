@@ -30,12 +30,11 @@ namespace ParkingWebAPI.Controllers
             return dataService.Menu.GetAllCars();
         }
 
-        // GET: api/Cars/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            
-            return "value";
+        // GET: api/Cars/id. Example: api/Cars/3
+        [HttpGet("{id}")]
+        public string GetCarById(int id)
+        {            
+            return dataService.Menu.GetCarDetails(id);
         }
         
         // POST: api/Cars/car_type. Example^ api/Cars/Truck
