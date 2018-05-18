@@ -15,15 +15,11 @@ namespace ParkingWebAPI.Controllers
     [Route("api/Cars")]
     public class CarsController : Controller
     {
-        private HttpClient HttpClient { get; set; }
-
         private Menu menu;
 
         public CarsController()
         {
             menu = Menu.GetMenu();
-
-            HttpClient = new HttpClient();
         }
 
         // GET: api/Cars
@@ -44,7 +40,13 @@ namespace ParkingWebAPI.Controllers
         [HttpPost]
         public IEnumerable<string> Post([FromBody] string value)
         {
-            menu.AddCar(CarTypes.Bus);
+            var data = JsonConvert.DeserializeObject<CarDetail>(value);
+
+            if (data.carType == "Truck")
+            {
+                menu.AddCar(CarTypes.Truck);
+            }
+
 
             return new string[] { "Car added " + value };
         }
@@ -60,15 +62,16 @@ namespace ParkingWebAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            menu.DeleteCarById(id);
         }
     }
 
     //ЧОМУСЬ ПЕРЕСТАЛО ПРАЦЮВАТИ........
     ////Обхідний маневр, бо більше нічого не виходить
     ////щось не виходить через enum CarTypes призначати тип машини
-    //public class CarDetail
-    //{
-    //    public string carType { get; set; }
-    //    //public double startingBalance { get; set; }
-    //}
+    public class CarDetail
+    {
+        public string carType { get; set; }
+        //public double startingBalance { get; set; }
+    }
 }
