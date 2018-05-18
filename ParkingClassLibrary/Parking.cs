@@ -486,7 +486,9 @@ namespace ParkingClassLibrary
             {
                 if (item.DateTimeOfTransaction > dateTimeNowMinuseOneMinute && item.IdOfCar == idOfCar)
                 {
-                    stringBuilderOfTransaction.AppendLine(item.ToString());
+                    stringBuilderOfTransaction.AppendLine("Id of car: " + item.IdOfCar + "  " + 
+                        item.DateTimeOfTransaction.ToLongDateString() + item.DateTimeOfTransaction.ToLongTimeString() + "  WrittenOffFunds: " +
+                        item.WrittenOffFunds.ToString());
                 }
             }
 

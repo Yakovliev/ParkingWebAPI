@@ -6,7 +6,7 @@ using ParkingClassLibrary;
 
 namespace ParkingWebAPI.Services
 {
-    public class DataService
+    public sealed class DataService
     {
         public Menu Menu { get; set; }
 
