@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ParkingWebAPI.Services;
 
 namespace ParkingWebAPI.Controllers
 {
@@ -11,20 +12,34 @@ namespace ParkingWebAPI.Controllers
     [Route("api/Transactions")]
     public class TransactionsController : Controller
     {
-        // GET: api/Transactions
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly DataService dataService;
+
+        public TransactionsController(DataService dataService)
         {
-            return new string[] { "value1", "value2" };
+            this.dataService = dataService;
+        }
+
+        // GET: api/Transactions/all
+        [HttpGet("all")]
+        public IEnumerable<string> GetAllTransactionForLastMinute()
+        {
+            return new string[] { dataService.Menu.GetTransactionsForLastMinute() };
         }
 
         // GET: api/Transactions/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("id/{id}")]
+        public IEnumerable<string> GetTransactionsOfCarForLastMinute(string id)
         {
-            return "value";
+            try
+            {
+                return new string[] { dataService.Menu.GetTransactionsOfCarForLastMinute(Convert.ToInt32(id)) };
+            }
+            catch (FormatException)
+            {
+                return new string[] { "FormatException!" };
+            }
         }
-        
+
         // POST: api/Transactions
         [HttpPost]
         public void Post([FromBody]string value)
@@ -32,11 +47,19 @@ namespace ParkingWebAPI.Controllers
         }
         
         // PUT: api/Transactions/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{id}/{amount}")]
+        public IEnumerable<string> PutMoney(int id, string amount)
         {
+            try
+            {
+                return new string[] { dataService.Menu.ReplenishCarBalanceById(id, Convert.ToDouble(amount)) };
+            }
+            catch (FormatException)
+            {
+                return new string[] { "FormatException!" };
+            }
         }
-        
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
