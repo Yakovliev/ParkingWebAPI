@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ParkingWebAPI.Services;
+
 
 namespace ParkingWebAPI.Controllers
 {
@@ -11,11 +13,30 @@ namespace ParkingWebAPI.Controllers
     [Route("api/Parking")]
     public class ParkingController : Controller
     {
-        // GET: api/Parking
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly DataService dataService;
+
+        public ParkingController(DataService dataService)
         {
-            return new string[] { "value1", "value2" };
+            this.dataService = dataService;
+        }
+
+        // GET: api/Parking/free
+        [HttpGet("free")]
+        public IEnumerable<string> GetFreeParkingPlaces()
+        {
+            return new string[] { "Free parking places: " + dataService.Menu.GetFreeParkingPlaces().ToString() };
+        }
+
+        [HttpGet("occupied")]
+        public IEnumerable<string> GetOccupiedParkingPlaces()
+        {
+            return new string[] { "Occupied parking places: " + dataService.Menu.GetOccupiedParkingPlaces().ToString() };
+        }
+
+        [HttpGet("parking_balance")]
+        public IEnumerable<string> GetParkingBalance()
+        {
+            return new string[] { "Parking balance: " + dataService.Menu.GetParkingBalance().ToString() };
         }
 
         // GET: api/Parking/5
